@@ -1,0 +1,129 @@
+.row_container {
+  height: 10rem;
+  //margin-left: 0.125rem;
+  width: 90vw;
+
+  @media (min-width: 768px) {
+    //margin-left: 0.5rem;
+  }
+}
+
+.row_container_chevron_left {
+  background: aliceblue;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 2rem;
+  z-index: 40; // Equivalent to 'z-40' in Tailwind CSS
+  margin: auto; // Equivalent to 'm-auto' in Tailwind CSS
+  height: 2.25rem; // Equivalent to 'h-9' in Tailwind CSS
+  width: 2.25rem; // Equivalent to 'w-9' in Tailwind CSS
+  cursor: pointer; // Equivalent to 'cursor-pointer' in Tailwind CSS
+  opacity: 0; // Equivalent to 'opacity-0' in Tailwind CSS
+  transition-property: all; // Equivalent to 'transition' in Tailwind CSS
+  transition-duration: 0.3s; // Set the desired duration for the transition
+}
+
+.row_container_chevron_left:hover {
+  transform: scale(1.25); // Equivalent to 'hover:scale-125' in Tailwind CSS
+  opacity: 1; // Equivalent to 'group-hover:opacity-100' in Tailwind CSS
+}
+
+.row_container_title {
+  cursor: pointer;
+  margin-left: -0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e5e5e5;
+  transition-duration: 200ms;
+  transition-property: color;
+}
+
+.row_container_title:hover {
+  color: #fff;
+}
+
+.row_container_inner {
+  position: relative;
+  @media (min-width: 768px) {
+    margin-left: -1rem;
+  }
+}
+
+.row_container_inner:hover {
+  .row_container_left_button:hover,
+  .row_container_right_button:hover {
+    height: 7.2rem;
+    background: rgb(0, 0, 0, 0.5);
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.row_container_left_button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+  margin: auto;
+  height: 2.25rem;
+  width: 2.25rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+
+.row_container_left_button:hover,
+.row_container_right_button:hover {
+  height: 7.2rem;
+  background: rgb(0, 0, 0, 0.5);
+  transform: scale(1.25);
+  opacity: 1;
+}
+
+.row_container_right_button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 40;
+  margin: auto;
+  height: 2.25rem;
+  width: 2.25rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+
+//.row_container_right_button:hover {
+//  transform: scale(1.25);
+//  opacity: 1;
+//}
+
+.row_container_movies_list {
+  display: flex;
+  align-items: center;
+  //margin-left: 0.125rem;
+  //margin-right: 0.125rem;
+  overflow-x: scroll;
+  @media (min-width: 768px) {
+    padding: 0.5rem;
+  }
+}
+
+.row_container_movies_list > *:not(:last-child) {
+  margin-right: calc(0.5 * 1rem);
+  @media (min-width: 768px) {
+    margin-right: 0.8rem;
+
+  }
+}
+
+.row_container_movies_list::-webkit-scrollbar {
+  display: none;
+}
+
+.hidden {
+  visibility: hidden;
+}

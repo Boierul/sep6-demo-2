@@ -1,0 +1,158 @@
+.modal_container {
+  position: fixed;
+  top: 1.75rem;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 70rem;
+  overflow-y: scroll;
+  border-radius: 0.375rem;
+  scrollbar-width: none;
+}
+
+.modal_container::-webkit-scrollbar {
+  display: none;
+}
+
+.modal_container_button {
+  position: absolute;
+  right: 1.25rem;
+  top: 1.25rem;
+  z-index: 40;
+  height: 2.25rem;
+  width: 2.25rem;
+  border: none;
+  border-radius: 50%;
+  background-color: #181818;
+}
+
+.modal_container_button:hover {
+  background-color: rgba(24, 24, 24, 0.82);
+}
+
+.modal_container_player {
+  position: relative;
+  padding-top: 56.25%;
+  //padding-top: 20%;
+}
+
+.modalButton {
+  display: flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border-width: 2px;
+  border-color: gray;
+  background-color: rgba(42, 42, 42, 0.6);
+  transition: all 0.15s ease-in-out;
+}
+
+.modalButton:hover {
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modalButton_list {
+  display: flex;
+  flex-direction: row;
+  margin-left: 0.5rem;
+}
+
+.modalButton_container {
+  position: absolute;
+  bottom: 2.5rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.modal_description_container {
+
+}
+
+.modal_container_info {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  gap: 0.5rem;
+}
+
+.modal_container_rating {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #68D391;
+}
+
+.modal_container_date {
+  font-weight: 300;
+}
+
+.modal_container_icon {
+  display: flex;
+  height: 1rem; /* Adjust the value as per your requirement */
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem; /* Adjust the value as per your requirement */
+  border: 1px solid; /* Adjust the value as per your requirement */
+  border-color: #fff; /* Adjust the color as per your requirement */
+  border-color: rgba(255, 255, 255, 0.4); /* Adjust the color and alpha as per your requirement */
+  padding-left: 0.375rem; /* Adjust the value as per your requirement */
+  padding-right: 0.375rem; /* Adjust the value as per your requirement */
+  font-size: 0.75rem; /* Adjust the value as per your requirement */
+}
+
+.modal_container_description_container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.75rem; /* Adjust the value as per your requirement */
+  font-size: 0.875rem; /* Adjust the value as per your requirement */
+}
+
+.modal_container_movie_title {
+  font-size: 2.5rem; /* Adjust the value as per your requirement */
+  font-weight: bold;
+  padding-bottom: 0.75rem; /* Adjust the value as per your requirement */
+}
+
+.modal_container_inner {
+  width: 83.3333%; /* Adjust the value as per your requirement */
+}
+
+.modal_container_info_main {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2.5rem; /* Adjust the value as per your requirement */
+  margin-top: 1rem; /* Adjust the value as per your requirement */
+  font-weight: 300;
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.modal_container_dasd {
+  margin-top: 1.5rem; /* Adjust the value as per your requirement */
+  font-size: 1.125rem; /* Adjust the value as per your requirement */
+  display: flex;
+  //margin-left: 4rem; /* Adjust the value as per your requirement */
+  border-bottom-left-radius: 0.375rem; /* Adjust the value as per your requirement */
+  border-bottom-right-radius: 0.375rem; /* Adjust the value as per your requirement */
+  background-color: #181818; /* Adjust the color as per your requirement */
+  padding-left: 2.5rem; /* Adjust the value as per your requirement */
+  padding-right: 2.5rem; /* Adjust the value as per your requirement */
+  padding-top: 2rem; /* Adjust the value as per your requirement */
+  padding-bottom: 2rem; /* Adjust the value as per your requirement */
+}
+
+.color_gray {
+  color: gray;
+}
