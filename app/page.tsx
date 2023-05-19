@@ -65,7 +65,7 @@ export default async function Home() {
                 {/*    backgroundColor: "red",*/}
                 {/*}} onClick={handleClose}>Click</button>*/}
             </main>
-            <Modal showModal={true}/>
+            <Modal />
         </>
     )
 }
