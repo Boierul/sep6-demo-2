@@ -2,7 +2,7 @@
 
 import MuiModal from "@mui/material/Modal";
 import {modalState, movieState} from "@/app/atoms/modalAtom";
-import {Element, Genre, Movie} from "@/utils/typings";
+import {Cast, Element, Genre, Movie, MovieCredits} from "@/utils/typings";
 import {useRecoilState} from "recoil";
 import XIcon from "@heroicons/react/outline/XIcon";
 import {useEffect, useState} from "react";
@@ -22,13 +22,29 @@ function Modal() {
     const [addedToList, setAddedToList] = useState(false);
     // const { user } = useAuth();
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [moviesData, setMoviesData] = useState<MovieCredits>();
+    const [cast, setCast] = useState<Cast>();
 
 
     useEffect(() => {
         if (!movie) return;
 
+        async function getMovieCreditsFetch() {
+            const movieData = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
+                .then((res) => res.json());
+
+            if (movieData?.cast && movieData?.crew) {
+                setCast(movieData.cast)
+                console.log(movieData.cast);
+            }
+            // if (movieData?.cast && movieData?.crew) {
+            //     setMoviesData(movieData)
+            //     console.log(movieData);
+            // }
+        }
+
         async function fetchMovie() {
-            console.log("Fetching movie");
+            // console.log("Fetching movie");
 
             const data = await fetch(
                 `https://api.themoviedb.org/3/${
@@ -39,6 +55,8 @@ function Modal() {
             ).then((response) => response.json());
 
             setFetchedMovie(data);
+
+            // console.log(data);
 
             if (data?.videos) {
                 const index = data.videos.results.findIndex(
@@ -53,6 +71,8 @@ function Modal() {
         }
 
         fetchMovie();
+        getMovieCreditsFetch();
+
     }, [movie]);
 
     // useEffect(() => {
@@ -121,14 +141,14 @@ function Modal() {
         //       method: "POST",
         //     });
         //
-            toast(
-              `"${
+        toast(
+            `"${
                 fetchedMovie?.title || fetchedMovie?.original_name
-              }" has been added the your favorite list`,
-              {
+            }" has been added the your favorite list`,
+            {
                 duration: 1500,
-              }
-            );
+            }
+        );
         //   }
     };
 
@@ -144,15 +164,16 @@ function Modal() {
     //     }
     // }, [showModal]);
 
-    useEffect(() => {
-        const topButtonsElement = document.querySelector('.ytp-chrome-top-buttons');
-        console.log(topButtonsElement)
-        // if (topButtonsElement) {
-        //     topButtonsElement.style = "display: none;";
-        // }
-    }, [showModal]);
+    // useEffect(() => {
+    //     const topButtonsElement = document.querySelector('.ytp-chrome-top-buttons');
+    //     console.log(topButtonsElement)
+    //     // if (topButtonsElement) {
+    //     //     topButtonsElement.style = "display: none;";
+    //     // }
+    // }, [showModal]);
 
 
+    // @ts-ignore
     return (
         <MuiModal
             open={showModal}
@@ -162,13 +183,13 @@ function Modal() {
             <>
                 <Toaster position="bottom-center"
                          toastOptions={{
-                    style: {
-                        border: '1px solid #ffffff',
-                        padding: '16px',
-                        background: '#181818',
-                        color: '#ffffff'
-                    },
-                }}/>
+                             style: {
+                                 border: '1px solid #ffffff',
+                                 padding: '16px',
+                                 background: '#181818',
+                                 color: '#ffffff'
+                             },
+                         }}/>
                 <button
                     onClick={handleClose}
                     className={`${styles.modalButton_Close}`}
@@ -181,15 +202,13 @@ function Modal() {
                         url={`https://www.youtube.com/watch?v=${trailer}`}
                         width="100%"
                         height="100%"
+                        muted={muted}
+                        playing
                         style={{
                             position: "absolute",
                             top: "0",
-                            left: "0",
-                            backgroundSize: "cover",
-
-                    }}
-                        muted={muted}
-                        playing
+                            left: "0"
+                        }}
                     />
 
                     <div className={styles.modal_buttons_container}>
@@ -202,13 +221,13 @@ function Modal() {
                                 )}
                             </button>
 
-                        <button className={styles.modalButton} onClick={() => setMuted(!muted)}>
-                            {muted ? (
-                                <VolumeOffIcon height="1.5rem" width="1.5rem"/>
-                            ) : (
-                                <VolumeUpIcon height="1.5rem" width="1.5rem"/>
-                            )}
-                        </button>
+                            <button className={styles.modalButton} onClick={() => setMuted(!muted)}>
+                                {muted ? (
+                                    <VolumeOffIcon height="1.5rem" width="1.5rem"/>
+                                ) : (
+                                    <VolumeUpIcon height="1.5rem" width="1.5rem"/>
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -258,6 +277,23 @@ function Modal() {
                                     {fetchedMovie?.vote_count}
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            cast:
+                            {cast && <span>hej</span>}
+                            {/*{cast.slice(0, 3).map(({ id, name, }) => (*/}
+                            {/*    <span>{name}</span>*/}
+                            {/*))}*/}
+                            {/*{moviesData.cast.slice(0, 3).map(({ id, name}) => (*/}
+                            {/*    <div key={id}>*/}
+                            {/*        /!*<p>*!/*/}
+                            {/*        /!*    {character.replaceAll('/', '\n')}*!/*/}
+                            {/*        /!*</p>*!/*/}
+                            {/*        <div>*/}
+                            {/*            <p>{name}</p>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*))}*/}
                         </div>
                     </div>
                 </div>

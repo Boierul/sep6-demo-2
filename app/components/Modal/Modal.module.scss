@@ -10,6 +10,7 @@
   overflow-y: scroll;
   border-radius: 0.375rem;
   scrollbar-width: none;
+  border: 1px solid #181818;
 }
 
 .modal_container::-webkit-scrollbar {
@@ -35,14 +36,15 @@
 .modal_container_player {
   position: relative;
   padding-top: 56.25%;
+  border: 1.5px solid #181818;
   //padding-top: 20%;
 }
 
 .modalButton, .modalButton_Close {
   cursor: pointer;
   display: flex;
-  height: 2.75rem;
-  width: 2.75rem;
+  height: 2.25rem;
+  width: 2.25rem;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
@@ -58,8 +60,6 @@
   right: 1.25rem;
   top: 3.25rem;
   z-index: 40;
-  height: 2.25rem;
-  width: 2.25rem;
 }
 
 .modalButton:hover,
@@ -110,16 +110,16 @@
 
 .modal_container_icon {
   display: flex;
-  height: 1rem; /* Adjust the value as per your requirement */
+  height: 1rem;
   align-items: center;
   justify-content: center;
-  border-radius: 0.25rem; /* Adjust the value as per your requirement */
-  border: 1px solid; /* Adjust the value as per your requirement */
-  border-color: #fff; /* Adjust the color as per your requirement */
-  border-color: rgba(255, 255, 255, 0.4); /* Adjust the color and alpha as per your requirement */
-  padding-left: 0.375rem; /* Adjust the value as per your requirement */
-  padding-right: 0.375rem; /* Adjust the value as per your requirement */
-  font-size: 0.75rem; /* Adjust the value as per your requirement */
+  border-radius: 0.25rem;
+  border: 1px solid;
+  border-color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  font-size: 0.75rem;
 }
 
 .modal_container_description_container {
@@ -136,9 +136,9 @@
 }
 
 .modal_container_movie_title {
-  font-size: 2.5rem; /* Adjust the value as per your requirement */
+  font-size: 2.5rem;
   font-weight: bold;
-  padding-bottom: 0.75rem; /* Adjust the value as per your requirement */
+  padding-bottom: 0.75rem;
 }
 
 .modal_container_inner {
@@ -157,14 +157,15 @@
 }
 
 .modal_container_dasd {
-  margin-top: 1.5rem; /* Adjust the value as per your requirement */
-  font-size: 1.125rem; /* Adjust the value as per your requirement */
+  //margin-top: 1.5rem;
+  font-size: 1.125rem;
   display: flex;
   flex-direction: column;
-  //margin-left: 4rem; /* Adjust the value as per your requirement */
-  border-bottom-left-radius: 0.375rem; /* Adjust the value as per your requirement */
-  border-bottom-right-radius: 0.375rem; /* Adjust the value as per your requirement */
-  background-color: #181818; /* Adjust the color as per your requirement */
+  //margin-left: 4rem;
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  background-color: rgba(2, 2, 2, 0.87);
+  border: 1px solid #181818;
   padding: 3rem 2.5rem;
   padding-top: 2rem !important;
 }

@@ -20,9 +20,6 @@ function Thumbnail({movie}: Props) {
                 setShowModal(true);
             }}
         >
-            {/*<p style={{*/}
-            {/*    color: 'white',*/}
-            {/*}}>{movie.title}</p>*/}
             <Image
                 src={`https://image.tmdb.org/t/p/w500${
                     movie.backdrop_path || movie.poster_path
