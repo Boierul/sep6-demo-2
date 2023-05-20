@@ -11,9 +11,7 @@ import Modal from "@/app/components/Modal/Modal";
 
 // Need full path url in server side rendering
 async function getPosts() {
-    const res = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=aae78cfb39d643aed516a8501149479e&language=en-US`, {
-        cache: "no-cache",
-    })
+    const res = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=aae78cfb39d643aed516a8501149479e&language=en-US`)
     if (!res.ok) {
         console.log(res)
     }
@@ -49,9 +47,8 @@ export default async function Home() {
         <>
             <main className={styles.main}>
                 <Row title="Trending Now" movies={trendingData}/>
-
             </main>
-            <Modal />
+            <Modal/>
         </>
     )
 }

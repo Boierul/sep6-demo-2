@@ -12,6 +12,7 @@ import {CheckIcon, VolumeUpIcon} from "@heroicons/react/outline";
 import toast, {Toaster} from "react-hot-toast";
 import styles from "./Modal.module.scss";
 import {getNumberWithCommas, getNumberWithSpaces} from "@/utils/numbers";
+import {formatDate} from "@/utils/date";
 
 function Modal() {
     const [showModal, setShowModal] = useRecoilState(modalState);
@@ -95,11 +96,9 @@ function Modal() {
                 }&language=en-US&append_to_response=videos`
             ).then((response) => response.json());
 
-            setFetchedMovie(data);
-            // if (data?.id) {
-            // }
-
-            console.log(data);
+            if (data?.budget && data?.revenue) {
+                setFetchedMovie(data);
+            }
 
             if (data?.videos) {
                 const index = data.videos.results.findIndex(
@@ -224,7 +223,7 @@ function Modal() {
             onClose={handleClose}
             className={styles.modal_container}
         >
-            <>
+            <div className={styles.modal_container_inner}>
                 <Toaster position="bottom-center"
                          toastOptions={{
                              style: {
@@ -290,164 +289,116 @@ function Modal() {
                     </div>
                 </div>
 
-                <div className={styles.modal_container_asdasda}>
-                    <div className={styles.modal_container_dasd}>
-
-                        <div className={styles.modal_container_info}>
+                <div>
+                    <div className={styles.modal_container_additional_info_main}>
+                        <div className={styles.modal_container_header}>
                             <p className={styles.modal_container_rating}>
-                                Rating: {fetchedMovie?.vote_average.toFixed(1)}
-                                {/*Rating: 7.2*/}
+                                Rating: {fetchedMovie?.vote_average.toFixed(2)}
                             </p>
                             <p className={styles.modal_container_date}>
-                                {/*12 December 2022*/}
-                                {fetchedMovie?.release_date || fetchedMovie?.first_air_date}
+                                {formatDate(fetchedMovie?.release_date) || formatDate(fetchedMovie?.first_air_date) || "Not Available"}
                             </p>
                             <div className={styles.modal_container_icon}>
                                 HD
                             </div>
                         </div>
 
-                        <div className={styles.modal_container_info_main}>
-                            <div className={styles.modal_container_inner}>
+                        <div className={styles.modal_container_details}>
+                            <div className={styles.modal_container_main_details}>
                                 <h2 className={styles.modal_container_movie_title}>
-                                    {/*Movie Title*/}
                                     {fetchedMovie?.title || fetchedMovie?.name}
                                 </h2>
-                                <p className={styles.modal_container_sasdas}>{fetchedMovie?.overview}</p>
-                                {/*<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>*/}
+                                <p className={styles.modal_container_overview}>{fetchedMovie?.overview}</p>
                             </div>
 
-                            <div className={styles.modal_container_description_container}>
+                            <div className={styles.modal_container_identifiers}>
                                 <div>
-                                    <span className={styles.color_gray}>Genres: </span>
-                                    {/*Action, Adventure, Fantasy*/}
+                                    <span className={styles.modal_container_color_gray}>Genres: </span>
                                     {genres.map((genre) => genre.name).join(", ")}
                                 </div>
 
                                 <div>
-                                    <span className={styles.color_gray}>Original language: </span>
-                                    {/*EN*/}
+                                    <span className={styles.modal_container_color_gray}>Original language: </span>
                                     {fetchedMovie?.original_language.toUpperCase()}
                                 </div>
                                 <div>
-                                    <span className={styles.color_gray}>Total votes: </span>
-                                    {/*3000*/}
+                                    <span className={styles.modal_container_color_gray}>Total votes: </span>
                                     {fetchedMovie?.vote_count}
                                 </div>
                             </div>
                         </div>
-                        <div className={styles.cast_title}>
+
+                        <div className={styles.modal_container_cast_title}>
                             <h2>Cast</h2>
                         </div>
-                        <div className={styles.topCasts}>
+                        <div className={styles.modal_container_top_casts}>
                             {moviesData ? moviesData.cast.slice(0, 4).map(({id, name, character}) => (
-                                <div key={id} className={styles.topCast}>
-                                    <p className={styles.topCastCharacter}>
+                                <div key={id} className={styles.modal_container_top_cast}>
+                                    <p className={styles.modal_container_top_cast_character}>
                                         {character}
                                     </p>
                                     <div>
-                                        <p className={styles.topCastName}>{name}</p>
+                                        <p className={styles.modal_container_top_cast_name}>{name}</p>
                                     </div>
                                 </div>
                             )) : []}
                         </div>
 
-                        <div className={styles.divider}></div>
+                        <div className={styles.modal_container_divider}></div>
 
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            margin: '0 2.5rem'
-                        }}>
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '100%'
-                            }}>
-                                <div className={styles.director_title}>
-                                    <h4 style={{
-                                        color: 'gray'
-                                    }}>Director{movieExecutors.directors.length > 1 && 's'}</h4>
-                                    <div className={styles.directorCast}>
-                                        <p className={styles.topCastName}>
+                        <div className={styles.modal_container_more_info}>
+                            <div className={styles.modal_container_more_info_inner}>
+                                <div className={styles.modal_container_director_title}>
+                                    <h5 className={styles.modal_container_director_title_typography}>
+                                        Director{movieExecutors.directors.length > 1 && 's'}
+                                    </h5>
+                                    <div className={styles.modal_container_director_cast}>
+                                        <p className={styles.modal_container_top_cast_name}>
                                             {movieExecutors.directors.map(({name}, index) => (
-                                                <li key={index} style={{
-                                                    listStyle: 'none',
-                                                    marginBottom: '0.5rem'
-                                                }}>{name}</li>
+                                                <li key={index} className={styles.modal_container_li}>
+                                                    {name}
+                                                </li>
                                             ))}
                                         </p>
                                     </div>
                                 </div>
-                                <div className={styles.director_title}>
-                                    {movieExecutors.writers.length > 0 ? <h4 style={{
-                                        color: 'gray'
-                                    }}>
-                                        Writer{movieExecutors.writers.length > 1 && 's'}
-                                    </h4> : null}
+                                <div className={styles.modal_container_director_title}>
                                     {movieExecutors.writers.length > 0 ?
-                                        <div className={styles.directorCast}>
-                                            <p className={styles.topCastName}>
+                                        <h5 className={styles.modal_container_director_title_typography}>
+                                            Writer{movieExecutors.writers.length > 1 && 's'}
+                                        </h5> : null}
+                                    {movieExecutors.writers.length > 0 ?
+                                        <div className={styles.modal_container_director_cast}>
+                                            <p className={styles.modal_container_top_cast_name}>
                                                 {movieExecutors.writers.map(({name}, index) => (
-                                                    <li key={index} style={{
-                                                        listStyle: 'none',
-                                                        marginBottom: '0.5rem'
-                                                    }}>{name}</li>
+                                                    <li key={index} className={styles.modal_container_li}>
+                                                        {name}
+                                                    </li>
                                                 ))}
                                             </p>
                                         </div> : null}
                                 </div>
                             </div>
-                            <div style={{
-                                border: '1px solid gray',
-                                width: '200%',
-                                height: '7.5rem',
-                                margin: '1.25rem 2.5rem',
-                                padding: '0.5rem 1rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}>
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    marginTop: '0.5rem'
-                                }}>
+
+                            <div className={styles.modal_container_boxoffice_container}>
+                                <div className={styles.modal_container_boxoffice_title}>
                                     <h3>Box Office</h3>
                                 </div>
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center'
-                                }}>
-                                    <div style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        width:'100%',
-                                        marginTop: '0.875rem'
-                                    }}>
-                                        <h5 className={styles.color_gray}>Budget Worldwide</h5>
-                                        <p  style={{
-                                            marginTop: '0.25rem',
-                                            fontSize: '0.925rem'
-                                        }}>
+                                <div className={styles.modal_container_boxoffice_inner}>
+                                    <div className={styles.modal_container_boxoffice_budget}>
+                                        <h5 className={styles.modal_container_color_gray}>
+                                            Budget Worldwide
+                                        </h5>
+                                        <p className={styles.modal_container_boxoffice_paragraph}>
                                             {fetchedMovie?.budget ? '$ ' + getNumberWithSpaces(fetchedMovie?.budget) : 'Not available'}
                                         </p>
                                     </div>
 
-                                    <div style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        width:'100%',
-                                        marginTop: '0.5rem'
-                                    }}>
-                                        <h5 className={styles.color_gray}>Cumulative Worldwide Gross</h5>
-                                        <p style={{
-                                            marginTop: '0.25rem',
-                                            fontSize: '0.925rem'
-                                        }}>
+                                    <div className={styles.modal_container_boxoffice_gross}>
+                                        <h5 className={styles.modal_container_color_gray}>
+                                            Cumulative Worldwide Gross
+                                        </h5>
+                                        <p className={styles.modal_container_boxoffice_paragraph}>
                                             {fetchedMovie?.revenue ? '$ ' + getNumberWithSpaces(fetchedMovie?.revenue) : 'Not available yet'}
                                         </p>
                                     </div>
@@ -456,7 +407,7 @@ function Modal() {
                         </div>
                     </div>
                 </div>
-            </>
+            </div>
         </MuiModal>
     );
 }
