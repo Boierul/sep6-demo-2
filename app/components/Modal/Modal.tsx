@@ -14,16 +14,22 @@ import styles from "./Modal.module.scss";
 
 function Modal() {
     const [showModal, setShowModal] = useRecoilState(modalState);
+    // const { user } = useAuth();
+    // const [movies, setMovies] = useState<Movie[]>([]);
+    // const [cast, setCast] = useState<Cast[]>();
+
     const [fetchedMovie, setFetchedMovie] = useState<Movie>();
     const [movie, setMovie] = useRecoilState(movieState);
     const [trailer, setTrailer] = useState("");
     const [genres, setGenres] = useState<Genre[]>([]);
+    const [moviesData, setMoviesData] = useState<MovieCredits[]>();
+
     const [muted, setMuted] = useState(true);
     const [addedToList, setAddedToList] = useState(false);
-    // const { user } = useAuth();
-    const [movies, setMovies] = useState<Movie[]>([]);
-    const [moviesData, setMoviesData] = useState<MovieCredits>();
-    const [cast, setCast] = useState<Cast>();
+
+    // useEffect(() => {
+    //     console.log(showModal)
+    // }, [showModal]);
 
 
     useEffect(() => {
@@ -33,14 +39,14 @@ function Modal() {
             const movieData = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
                 .then((res) => res.json());
 
-            if (movieData?.cast && movieData?.crew) {
-                setCast(movieData.cast)
-                console.log(movieData.cast);
-            }
             // if (movieData?.cast && movieData?.crew) {
-            //     setMoviesData(movieData)
-            //     console.log(movieData);
+            //     setCast(movieData.cast)
+            //     console.log(movieData.cast);
             // }
+            if (movieData?.cast && movieData?.crew) {
+                setMoviesData(movieData)
+                // console.log(movieData);
+            }
         }
 
         async function fetchMovie() {
@@ -157,9 +163,11 @@ function Modal() {
     };
 
     // useEffect(() => {
-    //     const topButtonsElement = document.getElementById('ytp-chrome-top-buttons');
+    //     // #movie_player > div.ytp-chrome-top.ytp-show-cards-title > div.ytp-chrome-top-buttons
+    //     const topButtonsElement = document.querySelector("#movie_player > div.ytp-chrome-top.ytp-show-cards-title > div.ytp-chrome-top-buttons")
+    //     console.log(topButtonsElement)
     //     if (topButtonsElement) {
-    //         topButtonsElement.className.style.display = 'none';
+    //         topButtonsElement.style.display = "none";
     //         console.log(topButtonsElement)
     //     }
     // }, [showModal]);
@@ -173,7 +181,6 @@ function Modal() {
     // }, [showModal]);
 
 
-    // @ts-ignore
     return (
         <MuiModal
             open={showModal}
@@ -190,6 +197,7 @@ function Modal() {
                                  color: '#ffffff'
                              },
                          }}/>
+
                 <button
                     onClick={handleClose}
                     className={`${styles.modalButton_Close}`}
@@ -198,18 +206,30 @@ function Modal() {
                 </button>
 
                 <div className={styles.modal_container_player}>
-                    <ReactPlayer
-                        url={`https://www.youtube.com/watch?v=${trailer}`}
-                        width="100%"
-                        height="100%"
-                        muted={muted}
-                        playing
-                        style={{
-                            position: "absolute",
-                            top: "0",
-                            left: "0"
-                        }}
-                    />
+                    <div style={{
+                        pointerEvents: "none",
+                        overflow: "hidden"
+                    }}>
+                        <ReactPlayer
+                            url={`https://www.youtube.com/watch?v=${trailer}`}
+                            width="100%"
+                            height="100%"
+                            config={{
+                                youtube: {
+                                    playerVars: {
+                                        disablekb: 1
+                                    }
+                                }
+                            }}
+                            muted={muted}
+                            playing
+                            style={{
+                                position: "absolute",
+                                top: "0",
+                                left: "0",
+                            }}
+                        />
+                    </div>
 
                     <div className={styles.modal_buttons_container}>
                         <div className={styles.modalButton_list}>
@@ -278,22 +298,19 @@ function Modal() {
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div className={styles.topCasts}>
                             cast:
-                            {cast && <span>hej</span>}
-                            {/*{cast.slice(0, 3).map(({ id, name, }) => (*/}
-                            {/*    <span>{name}</span>*/}
-                            {/*))}*/}
-                            {/*{moviesData.cast.slice(0, 3).map(({ id, name}) => (*/}
-                            {/*    <div key={id}>*/}
-                            {/*        /!*<p>*!/*/}
-                            {/*        /!*    {character.replaceAll('/', '\n')}*!/*/}
-                            {/*        /!*</p>*!/*/}
-                            {/*        <div>*/}
-                            {/*            <p>{name}</p>*/}
-                            {/*        </div>*/}
-                            {/*    </div>*/}
-                            {/*))}*/}
+                            <br/>
+                            {moviesData ? moviesData.cast.slice(0, 3).map(({id, name, character}) => (
+                                <div key={id} className={styles.topCast}>
+                                    <p className={styles.topCastCharacter}>
+                                        {character.replaceAll('/', '\n')}
+                                    </p>
+                                    <div>
+                                        <p className={styles.topCastName}>{name}</p>
+                                    </div>
+                                </div>
+                            )) : []}
                         </div>
                     </div>
                 </div>

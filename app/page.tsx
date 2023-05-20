@@ -48,22 +48,8 @@ export default async function Home() {
     return (
         <>
             <main className={styles.main}>
-                {/*{data.map((post) => (*/}
-                {/*  <div key={post.id}>*/}
-                {/*      <h2>{post.title}</h2>*/}
-                {/*      <h4>{post.content}</h4>*/}
-                {/*      <h4>{post.published.toString()}</h4>*/}
-                {/*  </div>*/}
-                {/*))}*/}
                 <Row title="Trending Now" movies={trendingData}/>
-                {/*<button style={{*/}
-                {/*    paddingBottom: "100px",*/}
-                {/*    backgroundColor: "red",*/}
-                {/*}} onClick={handleAddClick}>Click</button>*/}
-                {/*<button style={{*/}
-                {/*    paddingBottom: "100px",*/}
-                {/*    backgroundColor: "red",*/}
-                {/*}} onClick={handleClose}>Click</button>*/}
+
             </main>
             <Modal />
         </>

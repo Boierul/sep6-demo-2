@@ -53,13 +53,14 @@
   background-color: rgba(42, 42, 42, 0.9);
   transition: all 0.15s ease-in-out;
   margin-right: 1rem;
+  z-index: 100;
 }
 
 .modalButton_Close {
   position: absolute;
   right: 1.25rem;
-  top: 3.25rem;
-  z-index: 40;
+  top: 1.25rem;
+  z-index: 100;
 }
 
 .modalButton:hover,
@@ -69,6 +70,7 @@
 }
 
 .modalButton_list {
+  padding-bottom: 1rem;
   display: flex;
   flex-direction: row;
   margin-left: 0.5rem;
@@ -182,4 +184,37 @@
 
 .ytp-chrome-top-buttons {
  display: none;
+}
+
+.topCasts {
+  display: flex;
+  margin-bottom: 56px;
+  width: fit-content;
+}
+
+.topCast:not(:last-child) {
+  margin-right: 64px;
+}
+
+.topCast {
+  align-items: end;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.topCastCharacter {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  opacity: 0.5;
+  white-space: pre-line;
+}
+
+.topCastName {
+  display: table-caption;
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 114%;
 }
