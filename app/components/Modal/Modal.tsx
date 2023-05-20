@@ -2,7 +2,7 @@
 
 import MuiModal from "@mui/material/Modal";
 import {modalState, movieState} from "@/app/atoms/modalAtom";
-import {Cast, Element, Genre, Movie, MovieCredits} from "@/utils/typings";
+import {Cast, Crew, Element, Genre, Movie, MovieCredits} from "@/utils/typings";
 import {useRecoilState} from "recoil";
 import XIcon from "@heroicons/react/outline/XIcon";
 import {useEffect, useState} from "react";
@@ -11,6 +11,7 @@ import {PlusIcon, VolumeOffIcon} from "@heroicons/react/solid";
 import {CheckIcon, VolumeUpIcon} from "@heroicons/react/outline";
 import toast, {Toaster} from "react-hot-toast";
 import styles from "./Modal.module.scss";
+import {getNumberWithCommas, getNumberWithSpaces} from "@/utils/numbers";
 
 function Modal() {
     const [showModal, setShowModal] = useRecoilState(modalState);
@@ -23,6 +24,10 @@ function Modal() {
     const [trailer, setTrailer] = useState("");
     const [genres, setGenres] = useState<Genre[]>([]);
     const [moviesData, setMoviesData] = useState<MovieCredits[]>();
+    const [movieExecutors, setMovieExecutors] = useState<{
+        directors: Crew[];
+        writers: Crew[];
+    }>({directors: [], writers: []});
 
     const [muted, setMuted] = useState(true);
     const [addedToList, setAddedToList] = useState(false);
@@ -31,6 +36,25 @@ function Modal() {
     //     console.log(showModal)
     // }, [showModal]);
 
+    // useEffect(() => {
+    //     console.log('Movie useEffect :: directors and writers trigger');
+    //
+    //     const executors: {
+    //         directors: Crew[];
+    //         writers: Crew[];
+    //     } = {
+    //         directors: [],
+    //         writers: [],
+    //     };
+    //
+    //     moviesData.crew.map((c) => {
+    //         if (c.job === 'Director') executors.directors.push(c);
+    //         else if (c.job === 'Writer' || c.job === 'Novel')
+    //             executors.writers.push(c);
+    //     });
+    //
+    //     setMovieExecutors(executors);
+    // }, [moviesData]);
 
     useEffect(() => {
         if (!movie) return;
@@ -39,19 +63,30 @@ function Modal() {
             const movieData = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
                 .then((res) => res.json());
 
-            // if (movieData?.cast && movieData?.crew) {
-            //     setCast(movieData.cast)
-            //     console.log(movieData.cast);
-            // }
             if (movieData?.cast && movieData?.crew) {
                 setMoviesData(movieData)
-                // console.log(movieData);
+            }
+
+            if (movieData?.crew) {
+                const executors: {
+                    directors: Crew[];
+                    writers: Crew[];
+                } = {
+                    directors: [],
+                    writers: [],
+                };
+
+                movieData.crew.map((c: Crew) => {
+                    if (c.job === 'Director') executors.directors.push(c);
+                    else if (c.job === 'Writer' || c.job === 'Novel')
+                        executors.writers.push(c);
+                });
+
+                setMovieExecutors(executors);
             }
         }
 
         async function fetchMovie() {
-            // console.log("Fetching movie");
-
             const data = await fetch(
                 `https://api.themoviedb.org/3/${
                     movie?.media_type === "tv" ? "tv" : "movie"
@@ -61,8 +96,10 @@ function Modal() {
             ).then((response) => response.json());
 
             setFetchedMovie(data);
+            // if (data?.id) {
+            // }
 
-            // console.log(data);
+            console.log(data);
 
             if (data?.videos) {
                 const index = data.videos.results.findIndex(
@@ -195,7 +232,7 @@ function Modal() {
                                  padding: '16px',
                                  background: '#181818',
                                  color: '#ffffff'
-                             },
+                             }
                          }}/>
 
                 <button
@@ -227,6 +264,7 @@ function Modal() {
                                 position: "absolute",
                                 top: "0",
                                 left: "0",
+                                objectFit: "cover"
                             }}
                         />
                     </div>
@@ -298,19 +336,123 @@ function Modal() {
                                 </div>
                             </div>
                         </div>
+                        <div className={styles.cast_title}>
+                            <h2>Cast</h2>
+                        </div>
                         <div className={styles.topCasts}>
-                            cast:
-                            <br/>
-                            {moviesData ? moviesData.cast.slice(0, 3).map(({id, name, character}) => (
+                            {moviesData ? moviesData.cast.slice(0, 4).map(({id, name, character}) => (
                                 <div key={id} className={styles.topCast}>
                                     <p className={styles.topCastCharacter}>
-                                        {character.replaceAll('/', '\n')}
+                                        {character}
                                     </p>
                                     <div>
                                         <p className={styles.topCastName}>{name}</p>
                                     </div>
                                 </div>
                             )) : []}
+                        </div>
+
+                        <div className={styles.divider}></div>
+
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            margin: '0 2.5rem'
+                        }}>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                width: '100%'
+                            }}>
+                                <div className={styles.director_title}>
+                                    <h4 style={{
+                                        color: 'gray'
+                                    }}>Director{movieExecutors.directors.length > 1 && 's'}</h4>
+                                    <div className={styles.directorCast}>
+                                        <p className={styles.topCastName}>
+                                            {movieExecutors.directors.map(({name}, index) => (
+                                                <li key={index} style={{
+                                                    listStyle: 'none',
+                                                    marginBottom: '0.5rem'
+                                                }}>{name}</li>
+                                            ))}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className={styles.director_title}>
+                                    {movieExecutors.writers.length > 0 ? <h4 style={{
+                                        color: 'gray'
+                                    }}>
+                                        Writer{movieExecutors.writers.length > 1 && 's'}
+                                    </h4> : null}
+                                    {movieExecutors.writers.length > 0 ?
+                                        <div className={styles.directorCast}>
+                                            <p className={styles.topCastName}>
+                                                {movieExecutors.writers.map(({name}, index) => (
+                                                    <li key={index} style={{
+                                                        listStyle: 'none',
+                                                        marginBottom: '0.5rem'
+                                                    }}>{name}</li>
+                                                ))}
+                                            </p>
+                                        </div> : null}
+                                </div>
+                            </div>
+                            <div style={{
+                                border: '1px solid gray',
+                                width: '200%',
+                                height: '7.5rem',
+                                margin: '1.25rem 2.5rem',
+                                padding: '0.5rem 1rem',
+                                display: 'flex',
+                                flexDirection: 'column',
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    marginTop: '0.5rem'
+                                }}>
+                                    <h3>Box Office</h3>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center'
+                                }}>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        width:'100%',
+                                        marginTop: '0.875rem'
+                                    }}>
+                                        <h5 className={styles.color_gray}>Budget Worldwide</h5>
+                                        <p  style={{
+                                            marginTop: '0.25rem',
+                                            fontSize: '0.925rem'
+                                        }}>
+                                            {fetchedMovie?.budget ? '$ ' + getNumberWithSpaces(fetchedMovie?.budget) : 'Not available'}
+                                        </p>
+                                    </div>
+
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        width:'100%',
+                                        marginTop: '0.5rem'
+                                    }}>
+                                        <h5 className={styles.color_gray}>Cumulative Worldwide Gross</h5>
+                                        <p style={{
+                                            marginTop: '0.25rem',
+                                            fontSize: '0.925rem'
+                                        }}>
+                                            {fetchedMovie?.revenue ? '$ ' + getNumberWithSpaces(fetchedMovie?.revenue) : 'Not available yet'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

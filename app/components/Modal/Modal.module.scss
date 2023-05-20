@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   z-index: 50;
-  margin: 5rem auto;
+  margin: 2.5rem auto;
   width: 100%;
   max-width: 70vw;
   overflow-y: scroll;
@@ -37,7 +37,6 @@
   position: relative;
   padding-top: 56.25%;
   border: 1.5px solid #181818;
-  //padding-top: 20%;
 }
 
 .modalButton, .modalButton_Close {
@@ -94,7 +93,7 @@
 .modal_container_info {
   display: flex;
   align-items: center;
-  margin-left: 2.75rem;
+  margin: 0 2.5rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
   gap: 0.75rem;
@@ -126,15 +125,18 @@
 
 .modal_container_description_container {
   line-height: 1.5rem;
+  padding-top: 4rem;
+  padding-left: 1.5rem;
   display: flex;
   flex-direction: column;
-  margin-top: 0.75rem;
   font-size: 0.875rem;
   max-width: 200px;
 }
 
 .modal_container_sasdas {
   padding-right: 2.5rem;
+  padding-bottom: 1.75rem;
+
 }
 
 .modal_container_movie_title {
@@ -144,14 +146,15 @@
 }
 
 .modal_container_inner {
-  width: 83.3333%; /* Adjust the value as per your requirement */
+  width: 83.3333%;
 }
 
 .modal_container_info_main {
   display: flex;
   flex-direction: column;
-  margin-left: 2.5rem; /* Adjust the value as per your requirement */
-  margin-top: 1rem; /* Adjust the value as per your requirement */
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  margin-top: 1rem;
   font-weight: 300;
   @media (min-width: 768px) {
     flex-direction: row;
@@ -176,6 +179,7 @@
   color: #a0a0a0;
   font-weight: bolder;
   font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
 }
 
 .modal_toast {
@@ -183,38 +187,73 @@
 }
 
 .ytp-chrome-top-buttons {
- display: none;
+  display: none;
 }
 
-.topCasts {
+.topCasts,
+.cast_title,
+.director_title {
   display: flex;
-  margin-bottom: 56px;
-  width: fit-content;
+  margin-bottom: 0.75rem;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  width: 100%;
+}
+
+.topCasts, .cast_title {
+  width: auto !important;
+}
+
+.cast_title,
+.director_title {
+  margin-top: 1rem;
+  color: #fff;
+}
+
+.director_title:not(:first-child) {
+  margin-top: 0;
+}
+
+.director_title {
+  flex-direction: column;
+  margin-left: 0 !important;
+}
+
+.directorCast {
+  margin-top: 0.25rem;
+
 }
 
 .topCast:not(:last-child) {
-  margin-right: 64px;
+  margin-right: 2.5rem;
 }
 
 .topCast {
-  align-items: end;
-  display: grid;
-  grid-template-rows: 1fr auto;
+  align-items: start;
+  display: flex;
+  flex-direction: column;
+  //display: grid;
+  //grid-template-rows: 3fr auto;
 }
 
 .topCastCharacter {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   opacity: 0.5;
   white-space: pre-line;
 }
 
 .topCastName {
-  display: table-caption;
+  min-width: 100px;
   font-family: 'Syne', sans-serif;
   font-size: 22px;
   font-weight: 700;
   line-height: 114%;
+}
+
+.divider {
+  margin: 0 2.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.85);
 }
