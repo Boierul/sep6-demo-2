@@ -34,29 +34,10 @@ function Modal() {
     const [muted, setMuted] = useState(true);
     const [addedToList, setAddedToList] = useState(false);
 
-    // useEffect(() => {
-    //     console.log(showModal)
-    // }, [showModal]);
+    // Extra fancy stuff
+    const resolutions = ['HD', 'Full HD', 'Ultra HD', '4K', '8K'];
+    const randomResolution = resolutions[Math.floor(Math.random() * resolutions.length)];
 
-    // useEffect(() => {
-    //     console.log('Movie useEffect :: directors and writers trigger');
-    //
-    //     const executors: {
-    //         directors: Crew[];
-    //         writers: Crew[];
-    //     } = {
-    //         directors: [],
-    //         writers: [],
-    //     };
-    //
-    //     moviesData.crew.map((c) => {
-    //         if (c.job === 'Director') executors.directors.push(c);
-    //         else if (c.job === 'Writer' || c.job === 'Novel')
-    //             executors.writers.push(c);
-    //     });
-    //
-    //     setMovieExecutors(executors);
-    // }, [moviesData]);
 
     useEffect(() => {
         if (!movie) return;
@@ -90,16 +71,9 @@ function Modal() {
 
         async function fetchMovie() {
             const data = await fetch(
-                `https://api.themoviedb.org/3/${
-                    movie?.media_type === "tv" ? "tv" : "movie"
-                }/${movie?.id}?api_key=${
-                    process.env.NEXT_PUBLIC_API_KEY
-                }&language=en-US&append_to_response=videos`
-            ).then((response) => response.json());
+                `https://api.themoviedb.org/3/movie/${movie?.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&append_to_response=videos`).then((response) => response.json());
 
-            if (data?.budget && data?.revenue) {
-                setFetchedMovie(data);
-            }
+            setFetchedMovie(data);
 
             if (data?.videos) {
                 const index = data.videos.results.findIndex(
@@ -210,7 +184,7 @@ function Modal() {
                          toastOptions={{
                              style: {
                                  border: '1px solid #ffffff',
-                                 padding: '16px',
+                                 padding: '1rem',
                                  background: '#181818',
                                  color: '#ffffff'
                              }
@@ -278,7 +252,10 @@ function Modal() {
                                 {formatDate(fetchedMovie?.release_date) || formatDate(fetchedMovie?.first_air_date) || "Not Available"}
                             </p>
                             <div className={styles.modal_container_icon}>
-                                HD
+                                {fetchedMovie ? fetchedMovie?.status : null}
+                            </div>
+                            <div className={styles.modal_container_icon}>
+                                {randomResolution}
                             </div>
                         </div>
 
@@ -301,8 +278,15 @@ function Modal() {
                                     {fetchedMovie?.original_language.toUpperCase() || "N/A"}
                                 </div>
                                 <div>
+                                    <span className={styles.modal_container_color_gray}>Runtime: </span>
+                                    <p style={{
+                                        display: "inline-block",
+                                        fontWeight: "bolder"
+                                    }}>{fetchedMovie?.runtime || "N/A"}</p> min
+                                </div>
+                                <div>
                                     <span className={styles.modal_container_color_gray}>Total votes: </span>
-                                    {fetchedMovie?.vote_count || "N/A"}
+                                    {fetchedMovie?.vote_count || "N/A"} votes
                                 </div>
                             </div>
                         </div>

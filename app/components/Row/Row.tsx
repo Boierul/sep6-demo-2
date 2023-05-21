@@ -34,6 +34,20 @@ function Row({title, movies}: Props) {
         }
     };
 
+    // function handleOpacityON() {
+    //     const leftButton = document.querySelector(`#row_container_left_button`);
+    //     const rightButton = document.querySelector(`#row_container_left_button`);
+    //     leftButton.style.opacity = "1";
+    //     rightButton.style.opacity = "1";
+    // }
+    //
+    // function handleOpacityOFF() {
+    //     const leftButton = document.querySelector(`#row_container_right_button`);
+    //     const rightButton = document.querySelector(`#row_container_right_button`);
+    //     leftButton.style.opacity = "0";
+    //     rightButton.style.opacity = "0";
+    // }
+
     return (
         <div className={styles.row_container}>
             <h2 className={styles.row_container_title}>
@@ -41,17 +55,17 @@ function Row({title, movies}: Props) {
             </h2>
             <div className={styles.row_container_inner}>
                 <ChevronLeftIcon
+                    id='row_container_left_button'
                     className={`${styles.row_container_left_button}`}
                     onClick={() => handleClick("left")}
                 />
-
                 <div ref={rowRef} className={styles.row_container_movies_list}>
                     {movies.results.map((movie) => (
                         <Thumbnail key={movie.id} movie={movie}/>
                     ))}
                 </div>
-
                 <ChevronRightIcon
+                    id='row_container_right_button'
                     className={styles.row_container_right_button}
                     onClick={() => handleClick("right")}
                 />

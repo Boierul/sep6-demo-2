@@ -18,6 +18,8 @@ export interface Movie {
   vote_count: number;
   budget: number;
   revenue: number;
+  status: string;
+  runtime: number;
 }
 
 export interface Genre {
