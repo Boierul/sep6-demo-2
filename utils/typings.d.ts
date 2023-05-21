@@ -1,8 +1,3 @@
-export interface Genre {
-  id: number;
-  name: string;
-}
-
 export interface Movie {
   title: string;
   backdrop_path: string;
@@ -15,12 +10,21 @@ export interface Movie {
   origin_country: string[];
   original_language: string;
   original_name: string;
+  original_title: string;
   overview: string;
   popularity: number;
   poster_path: string;
   vote_average: number;
   vote_count: number;
+  budget: number;
+  revenue: number;
 }
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
 export interface MovieCredits {
   id: number;
   cast: Cast[];
@@ -56,11 +60,10 @@ export interface Crew {
   job: string;
 }
 
-
 export interface Element {
   type:
     | "Bloopers"
-    | "Featurette"
+    | "Feature"
     | "Behind the Scenes"
     | "Clip"
     | "Trailer"

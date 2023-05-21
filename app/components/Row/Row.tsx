@@ -9,13 +9,16 @@ import {useRef, useState} from "react";
 
 interface Props {
     title: string;
-    movies: Movie[];
+    movies: {
+        results: Movie[];
+    };
 }
 
 function Row({title, movies}: Props) {
     const rowRef = useRef<HTMLDivElement>(null);
     const [isMoved, setIsMoved] = useState(false);
 
+    console.log(title)
     const handleClick = (direction: string) => {
         setIsMoved(true);
 

@@ -1,17 +1,18 @@
 'use client'
 
-import MuiModal from "@mui/material/Modal";
-import {modalState, movieState} from "@/app/atoms/modalAtom";
-import {Cast, Crew, Element, Genre, Movie, MovieCredits} from "@/utils/typings";
-import {useRecoilState} from "recoil";
-import XIcon from "@heroicons/react/outline/XIcon";
 import {useEffect, useState} from "react";
-import ReactPlayer from "react-player/lazy";
+import XIcon from "@heroicons/react/outline/XIcon";
 import {PlusIcon, VolumeOffIcon} from "@heroicons/react/solid";
 import {CheckIcon, VolumeUpIcon} from "@heroicons/react/outline";
+import MuiModal from "@mui/material/Modal";
 import toast, {Toaster} from "react-hot-toast";
+import {useRecoilState} from "recoil";
+import ReactPlayer from "react-player/lazy";
+
 import styles from "./Modal.module.scss";
-import {getNumberWithCommas, getNumberWithSpaces} from "@/utils/numbers";
+import {modalState, movieState} from "@/app/atoms/modalAtom";
+import {Crew, Element, Genre, Movie, MovieCredits} from "@/utils/typings";
+import {getNumberWithSpaces} from "@/utils/numbers";
 import {formatDate} from "@/utils/date";
 
 function Modal() {
@@ -24,7 +25,7 @@ function Modal() {
     const [movie, setMovie] = useRecoilState(movieState);
     const [trailer, setTrailer] = useState("");
     const [genres, setGenres] = useState<Genre[]>([]);
-    const [moviesData, setMoviesData] = useState<MovieCredits[]>();
+    const [moviesData, setMoviesData] = useState<MovieCredits | null>(null);
     const [movieExecutors, setMovieExecutors] = useState<{
         directors: Crew[];
         writers: Crew[];
@@ -64,8 +65,8 @@ function Modal() {
             const movieData = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
                 .then((res) => res.json());
 
+            setMoviesData(movieData)
             if (movieData?.cast && movieData?.crew) {
-                setMoviesData(movieData)
             }
 
             if (movieData?.crew) {
@@ -198,32 +199,13 @@ function Modal() {
         setShowModal(false);
     };
 
-    // useEffect(() => {
-    //     // #movie_player > div.ytp-chrome-top.ytp-show-cards-title > div.ytp-chrome-top-buttons
-    //     const topButtonsElement = document.querySelector("#movie_player > div.ytp-chrome-top.ytp-show-cards-title > div.ytp-chrome-top-buttons")
-    //     console.log(topButtonsElement)
-    //     if (topButtonsElement) {
-    //         topButtonsElement.style.display = "none";
-    //         console.log(topButtonsElement)
-    //     }
-    // }, [showModal]);
-
-    // useEffect(() => {
-    //     const topButtonsElement = document.querySelector('.ytp-chrome-top-buttons');
-    //     console.log(topButtonsElement)
-    //     // if (topButtonsElement) {
-    //     //     topButtonsElement.style = "display: none;";
-    //     // }
-    // }, [showModal]);
-
-
     return (
         <MuiModal
             open={showModal}
             onClose={handleClose}
             className={styles.modal_container}
         >
-            <div className={styles.modal_container_inner}>
+            <div>
                 <Toaster position="bottom-center"
                          toastOptions={{
                              style: {
@@ -238,14 +220,11 @@ function Modal() {
                     onClick={handleClose}
                     className={`${styles.modalButton_Close}`}
                 >
-                    <XIcon height="1.5rem" width="1.5rem" stroke-width="2"/>
+                    <XIcon height="1.5rem" width="1.5rem" strokeWidth="2"/>
                 </button>
 
                 <div className={styles.modal_container_player}>
-                    <div style={{
-                        pointerEvents: "none",
-                        overflow: "hidden"
-                    }}>
+                    <div className={styles.modal_container_player_container}>
                         <ReactPlayer
                             url={`https://www.youtube.com/watch?v=${trailer}`}
                             width="100%"
@@ -293,7 +272,7 @@ function Modal() {
                     <div className={styles.modal_container_additional_info_main}>
                         <div className={styles.modal_container_header}>
                             <p className={styles.modal_container_rating}>
-                                Rating: {fetchedMovie?.vote_average.toFixed(2)}
+                                Rating: {fetchedMovie?.vote_average.toFixed(2) || "Not Available"}
                             </p>
                             <p className={styles.modal_container_date}>
                                 {formatDate(fetchedMovie?.release_date) || formatDate(fetchedMovie?.first_air_date) || "Not Available"}
@@ -306,24 +285,24 @@ function Modal() {
                         <div className={styles.modal_container_details}>
                             <div className={styles.modal_container_main_details}>
                                 <h2 className={styles.modal_container_movie_title}>
-                                    {fetchedMovie?.title || fetchedMovie?.name}
+                                    {fetchedMovie?.title || fetchedMovie?.original_title || fetchedMovie?.name || "No Available Title"}
                                 </h2>
-                                <p className={styles.modal_container_overview}>{fetchedMovie?.overview}</p>
+                                <p className={styles.modal_container_overview}>{fetchedMovie?.overview || "No available description for this movie"}</p>
                             </div>
 
                             <div className={styles.modal_container_identifiers}>
                                 <div>
                                     <span className={styles.modal_container_color_gray}>Genres: </span>
-                                    {genres.map((genre) => genre.name).join(", ")}
+                                    {genres.map((genre) => genre.name).join(", ") || "N/A"}
                                 </div>
 
                                 <div>
                                     <span className={styles.modal_container_color_gray}>Original language: </span>
-                                    {fetchedMovie?.original_language.toUpperCase()}
+                                    {fetchedMovie?.original_language.toUpperCase() || "N/A"}
                                 </div>
                                 <div>
                                     <span className={styles.modal_container_color_gray}>Total votes: </span>
-                                    {fetchedMovie?.vote_count}
+                                    {fetchedMovie?.vote_count || "N/A"}
                                 </div>
                             </div>
                         </div>
@@ -335,13 +314,13 @@ function Modal() {
                             {moviesData ? moviesData.cast.slice(0, 4).map(({id, name, character}) => (
                                 <div key={id} className={styles.modal_container_top_cast}>
                                     <p className={styles.modal_container_top_cast_character}>
-                                        {character}
+                                        {character || "No available character type"}
                                     </p>
                                     <div>
-                                        <p className={styles.modal_container_top_cast_name}>{name}</p>
+                                        <p className={styles.modal_container_top_cast_name}>{name || "No name"}</p>
                                     </div>
                                 </div>
-                            )) : []}
+                            )) : ["Cast list not available"]}
                         </div>
 
                         <div className={styles.modal_container_divider}></div>
@@ -349,14 +328,15 @@ function Modal() {
                         <div className={styles.modal_container_more_info}>
                             <div className={styles.modal_container_more_info_inner}>
                                 <div className={styles.modal_container_director_title}>
-                                    <h5 className={styles.modal_container_director_title_typography}>
-                                        Director{movieExecutors.directors.length > 1 && 's'}
-                                    </h5>
+                                    {movieExecutors.directors.length > 0 ?
+                                        <h5 className={styles.modal_container_director_title_typography}>
+                                            Director{movieExecutors.directors.length > 1 && 's'}
+                                        </h5> : null}
                                     <div className={styles.modal_container_director_cast}>
                                         <p className={styles.modal_container_top_cast_name}>
                                             {movieExecutors.directors.map(({name}, index) => (
                                                 <li key={index} className={styles.modal_container_li}>
-                                                    {name}
+                                                    {name || "No name"}
                                                 </li>
                                             ))}
                                         </p>
@@ -372,7 +352,7 @@ function Modal() {
                                             <p className={styles.modal_container_top_cast_name}>
                                                 {movieExecutors.writers.map(({name}, index) => (
                                                     <li key={index} className={styles.modal_container_li}>
-                                                        {name}
+                                                        {name || "No name"}
                                                     </li>
                                                 ))}
                                             </p>
@@ -399,7 +379,7 @@ function Modal() {
                                             Cumulative Worldwide Gross
                                         </h5>
                                         <p className={styles.modal_container_boxoffice_paragraph}>
-                                            {fetchedMovie?.revenue ? '$ ' + getNumberWithSpaces(fetchedMovie?.revenue) : 'Not available yet'}
+                                            {fetchedMovie?.revenue ? '$ ' + getNumberWithSpaces(fetchedMovie?.revenue) : 'Not available'}
                                         </p>
                                     </div>
                                 </div>
