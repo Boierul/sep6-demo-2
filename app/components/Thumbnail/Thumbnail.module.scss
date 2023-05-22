@@ -30,3 +30,17 @@
   opacity: 1;
 }
 
+.thumbnail_title {
+  position: relative;
+  opacity: 0;
+  padding: .5rem;
+  height: 100%;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+}
+
+.thumbnail_title:hover {
+  opacity: 1;
+}
+

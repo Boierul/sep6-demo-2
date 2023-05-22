@@ -28,6 +28,7 @@ function Thumbnail({movie}: Props) {
                 layout="fill"
                 alt=""
             />
+            <h5 className={styles.thumbnail_title}>{movie?.title}</h5>
         </div>
     );
 }

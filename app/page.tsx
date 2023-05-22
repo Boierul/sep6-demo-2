@@ -2,6 +2,7 @@
 // import {modalState} from "@/app/atoms/modalAtom";
 import Row from "@/app/components/Row/Row";
 import Modal from "@/app/components/Modal/Modal";
+import Banner from "../app/components/Banner/Banner"
 import {
     getActionMovies,
     getComedyMovies, getDocumentaries, getHorrorMovies,
@@ -24,6 +25,7 @@ export default async function Home() {
     return (
         <>
             <main className={styles.main}>
+                <Banner netflixOriginals={netflixOriginals} />
                 <section className={styles.rows}>
                     {trendingMovies ? <Row title="Trending Now" movies={trendingMovies}/> : 'Loading resources'}
                     {topRated ? <Row title="Top Rated Movies" movies={topRated}/> : 'Loading resources'}
